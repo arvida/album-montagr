@@ -7,6 +7,7 @@ module LastFm
     end
 
     def slug
+      #basically remove all characters that is not word character (a-z , A-Z , 0-9) ??
       attributes['name'].gsub(/\W/, '')
     end
 
