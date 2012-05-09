@@ -1,18 +1,20 @@
+require 'tmpdir'
+
 module LastFm
   class Album
     attr_reader :attributes
 
-    def initialize album_attributes
+    def initialize album_attributes = {}
       @attributes = album_attributes
     end
 
+    # Converts spaces to -, removes all chars not mathing a-z0-9 and downcases the album name
     def slug
-      #basically remove all characters that is not word character (a-z , A-Z , 0-9) ??
-      attributes['name'].gsub(/\W/, '')
+      attributes['name'].gsub(/\s/, '-').gsub(/[^\w\-]/, '').downcase
     end
 
     def has_cover?
-      cover_url
+      !cover_url.nil?
     end
 
     def cover_url
@@ -24,10 +26,8 @@ module LastFm
     end
 
     def resized_cover_path(size)
-      cover = MiniMagick::Image.open cover_url
-      cover.resize size
-      tempfile_path = File.join(Dir.tmpdir, "#{slug}.jpg")
-      cover.write tempfile_path
+      cover_image.resize(size)
+      cover_image.write tempfile_path
 
       tempfile_path
     end
@@ -39,5 +39,16 @@ module LastFm
         Album.new album
       end
     end
+
+    private
+
+    def cover_image
+      MiniMagick::Image.open(cover_url)
+    end
+
+    def tempfile_path
+      File.join(Dir.tmpdir, "#{slug}.jpg")
+    end
+
   end
 end

@@ -14,6 +14,7 @@ GEM
       xml-simple
     mini_magick (3.4)
       subexec (~> 0.2.1)
+    minitest (3.0.0)
     multi_json (1.3.4)
     multi_xml (0.4.4)
     subexec (0.2.2)
@@ -25,3 +26,4 @@ PLATFORMS
 DEPENDENCIES
   lastfm
   mini_magick
+  minitest (~> 3.0.0)
